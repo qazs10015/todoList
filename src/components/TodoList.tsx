@@ -4,12 +4,16 @@ import { ITodoItemProps } from '../interfaces/ITodoItemProps';
 
 const TodoList: React.FC<ITodoProps> = ({ todoItems, changeTodoItemStatus }) => {
 
-
-
+    // toggle all todo items
     const toggleAll = () => {
-
+        const updatedTodoItems = todoItems.map(item => {
+            item.completed = !item.completed;
+            return item;
+        });
+        changeTodoItemStatus(updatedTodoItems);
     };
 
+    // complete todo item
     const completedTodo = (selectedItem: ITodoItemProps) => {
         const updatedTodoItems = todoItems.map(item => {
             if (item.id === selectedItem.id) item.completed = !item.completed;
@@ -19,6 +23,7 @@ const TodoList: React.FC<ITodoProps> = ({ todoItems, changeTodoItemStatus }) => 
 
     }
 
+    // delete todo item
     const deleteTodo = (id: string) => {
         console.log(id);
         changeTodoItemStatus((prev: ITodoItemProps[]) => prev.filter(item => item.id !== id));
