@@ -1,21 +1,26 @@
-import React from 'react'
+import React from 'react';
+import { IActionProps } from '../interfaces/IActionProps';
+import { TodoItemStatus } from '../types/TodoItemStatus';
 
-const Action = () => {
+const Action: React.FC<IActionProps> = ({ todoItemCount, setTodoItemEvent }) => {
+    // get fragment from URL
+    const fragment = window.location.hash.slice(2).toUpperCase() as TodoItemStatus | '';
+
     return (
         <footer className="footer">
-            <span className="todo-count"><strong>0</strong> item left</span>
+            <span className="todo-count"><strong>{todoItemCount}</strong> item left</span>
             <ul className="filters">
                 <li>
-                    <a className="selected" href="#/">All</a>
+                    <a className={fragment === '' ? 'selected' : ''} href="#/" onClick={() => setTodoItemEvent('ALL')}>All</a>
                 </li>
                 <li>
-                    <a href="#/active">Active</a>
+                    <a href="#/active" className={fragment === 'ACTIVE' ? 'selected' : ''} onClick={() => setTodoItemEvent('ACTIVE')}>Active</a>
                 </li>
                 <li>
-                    <a href="#/completed">Completed</a>
+                    <a href="#/completed" className={fragment === 'COMPLETED' ? 'selected' : ''} onClick={() => setTodoItemEvent('COMPLETED')}>Completed</a>
                 </li>
             </ul>
-            <button className="clear-completed">Clear completed</button>
+            <button className="clear-completed" onClick={() => setTodoItemEvent('CLEAR')}>Clear completed</button>
         </footer>
     )
 }

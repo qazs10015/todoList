@@ -1,36 +1,54 @@
-import { useEffect, useState } from "react";
-import Action from "./components/Action"
-import Header from "./components/Header"
-import { ITodoItemProps } from "./interfaces/ITodoItemProps";
+import React, { useState } from "react";
+import Action from "./components/Action";
+import Header from "./components/Header";
 import TodoList from "./components/TodoList";
+import { ITodoItemProps } from "./interfaces/ITodoItemProps";
+import { TodoItemStatus } from "./types/TodoItemStatus";
+
+
 
 function App() {
-  const [newTodo, setNewTodo] = useState<ITodoItemProps>(() => ({ id: '', title: '', completed: false }));
-  const [todoItem, setTodoItem] = useState<ITodoItemProps[]>([]);
 
-  useEffect(() => {
-    if (newTodo.id) {
-      console.log(newTodo);
-      setTodoItem((prev) => [...prev, newTodo])
+  // 儲存所有的 todo item
+  const [todoItems, setTodoItems] = useState<ITodoItemProps[]>([]);
+  // 儲存過濾後的 todo item
+  const [filterTodoItems, setFilterTodoItems] = useState(todoItems);
+  // 過濾狀態
+  const [todoItemStatus, setTodoItemStatus] = useState<TodoItemStatus>('ALL')
+
+  const addNewTodo = React.useCallback((newTodo: ITodoItemProps) => {
+    console.log(newTodo);
+    setTodoItems((prev) => [...prev, newTodo]);
+  }, []);
+
+  React.useEffect(() => {
+    switch (todoItemStatus) {
+      case 'ACTIVE':
+        setFilterTodoItems(todoItems.filter(item => !item.completed));
+        break;
+      case 'COMPLETED':
+        setFilterTodoItems(todoItems.filter(item => item.completed));
+        break;
+      default:
+        setFilterTodoItems(todoItems);
+        break;
     }
-  }, [newTodo])
+  }, [todoItemStatus, todoItems]);
 
-  useEffect(() => {
-    console.log(todoItem);
-  }, [todoItem]);
+  React.useEffect(() => {
+    if (todoItemStatus === 'CLEAR') setTodoItems([]);
+  }, [todoItemStatus]);
 
-  // console.log(todo);
 
   return (
     <>
       <section className="todoapp">
 
-        <Header addNewTodo={setNewTodo} ></Header>
+        <Header addNewTodo={addNewTodo} ></Header>
 
-        <TodoList todoItems={todoItem}  changeTodoItemStatus={setTodoItem}></TodoList>
+        <TodoList todoItems={filterTodoItems} changeTodoItemStatus={setFilterTodoItems}></TodoList>
 
-        <Action></Action>
-
+        <Action todoItemCount={filterTodoItems.length} setTodoItemEvent={setTodoItemStatus}></Action>
 
       </section>
 

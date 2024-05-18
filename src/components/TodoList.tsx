@@ -2,7 +2,7 @@ import React from 'react'
 import { ITodoProps } from '../interfaces/ITodoProps'
 import { ITodoItemProps } from '../interfaces/ITodoItemProps';
 
-const TodoList: React.FC<ITodoProps> = ({ todoItems, changeTodoItemStatus }) => {
+const TodoList: React.FC<ITodoProps> = React.memo(({ todoItems, changeTodoItemStatus }) => {
 
     // toggle all todo items
     const toggleAll = () => {
@@ -45,38 +45,8 @@ const TodoList: React.FC<ITodoProps> = ({ todoItems, changeTodoItemStatus }) => 
                     </li>
                 ))}
             </ul>
-            {/* <ul className="todo-list">
-                {todoItems.map(item => (
-                    <li className='completed' key={item.id}>
-                        <div className="view">
-                            <input className="toggle" type="checkbox" checked={item.completed}></input>
-                            <label>{item.title}</label>
-                            <button className="destroy"></button>
-                        </div>
-                        <input className="edit" value={item.title}></input>
-                    </li>
-                ))}
-            </ul> */}
-            {/* <ul className="todo-list">
-                <li className="completed" >
-                    <div className="view">
-                        <input className="toggle" type="checkbox" checked></input>
-                        <label>Taste JavaScript</label>
-                        <button className="destroy"></button>
-                    </div>
-                    <input className="edit" value="Create a TodoMVC template"></input>
-                </li>
-                <li>
-                    <div className="view">
-                        <input className="toggle" type="checkbox"></input>
-                        <label>Buy a unicorn</label>
-                        <button className="destroy"></button>
-                    </div>
-                    <input className="edit" value="Rule the web"></input>
-                </li>
-            </ul> */}
         </section>
     )
-}
+})
 
 export default TodoList
