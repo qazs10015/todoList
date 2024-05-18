@@ -1,2 +1,14 @@
 @import url('../node_modules/todomvc-app-css/index.css');
 @import url('../node_modules/todomvc-common/base.css');
+.clear,
+html .clear:active {
+	float: right;
+	position: relative;
+	line-height: 19px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.clear:hover {
+	text-decoration: underline;
+}
