@@ -14,13 +14,16 @@ const Action: React.FC<IActionProps> = ({ todoItemCount, setTodoItemEvent }) => 
                     <a className={fragment === '' ? 'selected' : ''} href="#/" onClick={() => setTodoItemEvent('ALL')}>All</a>
                 </li>
                 <li>
-                    <a href="#/active" className={fragment === 'ACTIVE' ? 'selected' : ''} onClick={() => setTodoItemEvent('ACTIVE')}>Active</a>
+                    <a href="#/active" className={['ACTIVE', 'CLEAR-COMPLETED'].includes(fragment) ? 'selected' : ''} onClick={() => setTodoItemEvent('ACTIVE')}>Active</a>
                 </li>
                 <li>
                     <a href="#/completed" className={fragment === 'COMPLETED' ? 'selected' : ''} onClick={() => setTodoItemEvent('COMPLETED')}>Completed</a>
                 </li>
+                <li>
+                    <a href="#/clear-completed" className={fragment === 'COMPLETED' ? 'selected' : ''} onClick={() => setTodoItemEvent('CLEAR-COMPLETED')}>Clear completed</a>
+                </li>
             </ul>
-            <button className="clear-completed" onClick={() => setTodoItemEvent('CLEAR')}>Clear completed</button>
+            <button className="clear" onClick={() => setTodoItemEvent('CLEAR')}>Clear</button>
         </footer>
     )
 }

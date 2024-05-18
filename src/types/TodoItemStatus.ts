@@ -1,1 +1,1 @@
-export type TodoItemStatus = 'ALL' | 'ACTIVE' | 'COMPLETED' | 'CLEAR';
+export type TodoItemStatus = 'ALL' | 'ACTIVE' | 'COMPLETED' | 'CLEAR-COMPLETED' | 'CLEAR';

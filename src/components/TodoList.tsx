@@ -2,7 +2,7 @@ import React from 'react'
 import { ITodoProps } from '../interfaces/ITodoProps'
 import { ITodoItemProps } from '../interfaces/ITodoItemProps';
 
-const TodoList: React.FC<ITodoProps> = React.memo(({ todoItems, changeTodoItemStatus }) => {
+const TodoList: React.FC<ITodoProps> = React.memo(({ todoItems, changeTodoItemStatus, setTodoItems }) => {
 
     // toggle all todo items
     const toggleAll = () => {
@@ -19,14 +19,13 @@ const TodoList: React.FC<ITodoProps> = React.memo(({ todoItems, changeTodoItemSt
             if (item.id === selectedItem.id) item.completed = !item.completed;
             return item;
         });
-        changeTodoItemStatus(updatedTodoItems);
-
+        setTodoItems(updatedTodoItems);
     }
 
     // delete todo item
     const deleteTodo = (id: string) => {
         console.log(id);
-        changeTodoItemStatus((prev: ITodoItemProps[]) => prev.filter(item => item.id !== id));
+        setTodoItems((prev: ITodoItemProps[]) => prev.filter(item => item.id !== id));
     };
 
     return (

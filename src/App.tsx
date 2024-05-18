@@ -16,10 +16,10 @@ function App() {
   // 過濾狀態
   const [todoItemStatus, setTodoItemStatus] = useState<TodoItemStatus>('ALL')
 
-  const addNewTodo = React.useCallback((newTodo: ITodoItemProps) => {
+  const addNewTodo = (newTodo: ITodoItemProps) => {
     console.log(newTodo);
     setTodoItems((prev) => [...prev, newTodo]);
-  }, []);
+  }
 
   React.useEffect(() => {
     switch (todoItemStatus) {
@@ -29,14 +29,24 @@ function App() {
       case 'COMPLETED':
         setFilterTodoItems(todoItems.filter(item => item.completed));
         break;
-      default:
+      case 'CLEAR-COMPLETED':
         setFilterTodoItems(todoItems);
+        break;
+      case 'CLEAR':
+        setFilterTodoItems([]);
         break;
     }
   }, [todoItemStatus, todoItems]);
 
   React.useEffect(() => {
-    if (todoItemStatus === 'CLEAR') setTodoItems([]);
+    switch (todoItemStatus) {
+      case 'CLEAR-COMPLETED':
+        setTodoItems(todoItems.filter(item => !item.completed));
+        break;
+      case 'CLEAR':
+        setTodoItems([]);
+        break;
+    }
   }, [todoItemStatus]);
 
 
@@ -46,9 +56,9 @@ function App() {
 
         <Header addNewTodo={addNewTodo} ></Header>
 
-        <TodoList todoItems={filterTodoItems} changeTodoItemStatus={setFilterTodoItems}></TodoList>
+        <TodoList todoItems={filterTodoItems} changeTodoItemStatus={setFilterTodoItems} setTodoItems={setTodoItems}></TodoList>
 
-        <Action todoItemCount={filterTodoItems.length} setTodoItemEvent={setTodoItemStatus}></Action>
+        <Action todoItemCount={filterTodoItems.length} setTodoItemEvent={setTodoItemStatus} ></Action>
 
       </section>
 
