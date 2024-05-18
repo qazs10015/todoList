@@ -5,8 +5,6 @@ import TodoList from "./components/TodoList";
 import { ITodoItemProps } from "./interfaces/ITodoItemProps";
 import { TodoItemStatus } from "./types/TodoItemStatus";
 
-
-
 function App() {
 
   // 儲存所有的 todo item
@@ -14,14 +12,19 @@ function App() {
   // 儲存過濾後的 todo item
   const [filterTodoItems, setFilterTodoItems] = useState(todoItems);
   // 過濾狀態
-  const [todoItemStatus, setTodoItemStatus] = useState<TodoItemStatus>('ALL')
+  const [todoItemStatus, setTodoItemStatus] = useState<TodoItemStatus>(() => {
+    const fragment = window.location.hash.slice(2).toUpperCase() as TodoItemStatus;
+    return fragment || 'ALL';
+  });
 
   const addNewTodo = React.useCallback((newTodo: ITodoItemProps) => {
     console.log(newTodo);
+    if (newTodo.title === '') return;
     setTodoItems((prev) => [...prev, newTodo]);
   }, []);
 
   React.useEffect(() => {
+    console.log(todoItemStatus);
     switch (todoItemStatus) {
       case 'ACTIVE':
         setFilterTodoItems(todoItems.filter(item => !item.completed));
@@ -32,23 +35,19 @@ function App() {
       default:
         setFilterTodoItems(todoItems);
         break;
+
     }
   }, [todoItemStatus, todoItems]);
-
-  React.useEffect(() => {
-    if (todoItemStatus === 'CLEAR') setTodoItems([]);
-  }, [todoItemStatus]);
-
 
   return (
     <>
       <section className="todoapp">
 
-        <Header addNewTodo={addNewTodo} ></Header>
+        <Header addNewTodo={addNewTodo}></Header>
 
-        <TodoList todoItems={filterTodoItems} changeTodoItemStatus={setFilterTodoItems}></TodoList>
+        <TodoList todoItems={filterTodoItems} setTodoItems={setTodoItems}></TodoList>
 
-        <Action todoItemCount={filterTodoItems.length} setTodoItemEvent={setTodoItemStatus}></Action>
+        <Action todoItemCount={filterTodoItems.length} setTodoItems={setTodoItems} setTodoItemEvent={setTodoItemStatus}></Action>
 
       </section>
 

@@ -2,9 +2,13 @@ import React from 'react';
 import { IActionProps } from '../interfaces/IActionProps';
 import { TodoItemStatus } from '../types/TodoItemStatus';
 
-const Action: React.FC<IActionProps> = ({ todoItemCount, setTodoItemEvent }) => {
+const Action: React.FC<IActionProps> = ({ todoItemCount, setTodoItems, setTodoItemEvent }) => {
     // get fragment from URL
     const fragment = window.location.hash.slice(2).toUpperCase() as TodoItemStatus | '';
+
+    const clearCompleteTodo = () => {
+        setTodoItems(prev => prev.filter(item => !item.completed));
+    }
 
     return (
         <footer className="footer">
@@ -20,7 +24,7 @@ const Action: React.FC<IActionProps> = ({ todoItemCount, setTodoItemEvent }) => 
                     <a href="#/completed" className={fragment === 'COMPLETED' ? 'selected' : ''} onClick={() => setTodoItemEvent('COMPLETED')}>Completed</a>
                 </li>
             </ul>
-            <button className="clear-completed" onClick={() => setTodoItemEvent('CLEAR')}>Clear completed</button>
+            <button className="clear-completed" onClick={clearCompleteTodo}>Clear completed</button>
         </footer>
     )
 }
