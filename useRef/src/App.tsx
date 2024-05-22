@@ -1,34 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import Action from "./components/Action";
+import Header from "./components/Header";
+import TodoList from "./components/TodoList";
+import { ITodoItemProps } from "./interfaces/ITodoItemProps";
+import { TodoItemStatus } from "./types/TodoItemStatus";
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  // 儲存所有的 todo item
+  const [todoItems, setTodoItems] = useState<ITodoItemProps[]>([]);
+  // 儲存過濾後的 todo item
+  const [filterTodoItems, setFilterTodoItems] = useState(todoItems);
+  // 過濾狀態
+  const [todoItemStatus, setTodoItemStatus] = useState<TodoItemStatus>(() => {
+    const fragment = window.location.hash.slice(2).toUpperCase() as TodoItemStatus;
+    return fragment || 'ALL';
+  });
+
+  const addNewTodo = React.useCallback((newTodo: ITodoItemProps) => {
+    console.log(newTodo);
+    if (newTodo.title === '') return;
+    setTodoItems((prev) => [...prev, newTodo]);
+  }, []);
+
+  React.useEffect(() => {
+    console.log(todoItemStatus);
+    switch (todoItemStatus) {
+      case 'ACTIVE':
+        setFilterTodoItems(todoItems.filter(item => !item.completed));
+        break;
+      case 'COMPLETED':
+        setFilterTodoItems(todoItems.filter(item => item.completed));
+        break;
+      default:
+        setFilterTodoItems(todoItems);
+        break;
+
+    }
+  }, [todoItemStatus, todoItems]);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <section className="todoapp">
+
+        <Header addNewTodo={addNewTodo}></Header>
+
+        <TodoList todoItems={filterTodoItems} setTodoItems={setTodoItems}></TodoList>
+
+        <Action todoItemCount={filterTodoItems.length} setTodoItems={setTodoItems} setTodoItemEvent={setTodoItemStatus}></Action>
+
+      </section>
+
+      <footer className="info">
+        <p>Double-click to edit a todo</p>
+        <p>Template by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
+        <p>Created by <a href="https://github.com/qazs10015/React_Todo">qazs10015</a></p>
+        <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+      </footer>
     </>
+
+
   )
 }
 
