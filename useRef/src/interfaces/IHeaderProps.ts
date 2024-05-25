@@ -1,5 +1,6 @@
 import { ITodoItemProps } from './ITodoItemProps';
 
 export interface IHeaderProps {
-  addNewTodo: (todo: ITodoItemProps) => void;
+  todoRef: HTMLInputElement | null;
+  addNewTodo: (todo: string) => ITodoItemProps;
 }

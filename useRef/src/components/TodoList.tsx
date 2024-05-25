@@ -25,11 +25,8 @@ const TodoList: React.FC<ITodoProps> = React.memo(({ todoItems, setTodoItems }) 
         }
     }
 
-    // // delete todo item
-    const deleteTodo = (id: string) => {
-        console.log(id);
-        setTodoItems((prev: ITodoItemProps[]) => prev.filter(item => item.id !== id));
-    };
+    // delete todo item
+    const deleteTodo = (id: string) => setTodoItems((prev: ITodoItemProps[]) => prev.filter(item => item.id !== id));
 
 
     return (
