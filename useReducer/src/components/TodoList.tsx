@@ -18,7 +18,7 @@ function TodoList({ todoItems, toggleCompleted, deleteTodoItem, toggleAll, updat
                     return (
                         <li key={todoItem.id} className={todoItem.completed ? 'completed' : ''} onDoubleClick={() => changeWritable(todoItem.id)}>
                             {todoItem.writable ?
-                                <input type="text" className="new-todo" defaultValue={todoItem.title} onBlur={(e) => updateTodoItem(todoItem.id, e.target.value)} />
+                                <input type="text" className="new-todo" autoFocus defaultValue={todoItem.title} onBlur={(e) => updateTodoItem(todoItem.id, e.target.value)} />
                                 :
                                 <div className="view">
                                     <input className="toggle" type="checkbox" checked={todoItem.completed} onChange={() => toggleCompleted(todoItem.id)} />

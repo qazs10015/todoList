@@ -124,15 +124,29 @@ function App() {
     });
   }, []);
 
-  // console.log(state.todoItems);
+  const todoListProps = {
+    changeWritable,
+    updateTodoItem,
+    todoItems: state.filterTodoItems || [],
+    toggleCompleted,
+    deleteTodoItem,
+    toggleAll
+  };
+
+  const actionProps = {
+    count: state.filterTodoItems?.length || 0,
+    clearCompleted,
+    filterTodoItems
+  };
+
   return (
     <>
       <section className="todoapp">
         <Header addNewTodo={addNewTodo}></Header>
 
-        <TodoList changeWritable={changeWritable} updateTodoItem={updateTodoItem} todoItems={state.filterTodoItems || []} toggleCompleted={toggleCompleted} deleteTodoItem={deleteTodoItem} toggleAll={toggleAll}></TodoList>
+        <TodoList {...todoListProps}></TodoList>
 
-        <Action count={state.filterTodoItems?.length || 0} filterTodoItems={filterTodoItems} clearCompleted={clearCompleted}></Action>
+        <Action {...actionProps}></Action>
 
       </section>
       <footer className="info">
