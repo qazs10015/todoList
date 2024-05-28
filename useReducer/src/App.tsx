@@ -23,7 +23,9 @@ type ActionType =
   { type: 'active' } |
   { type: 'completed' } |
   { type: 'clearCompleted' } |
-  { type: 'all' };
+  { type: 'all' } |
+  { type: 'updateTodoItem'; payload: { id: string, title: string } } |
+  { type: 'changeWritable'; payload: string }
 
 function reducer(state: ITodoState, action: ActionType) {
   // 用於操作新增、刪除
@@ -32,7 +34,7 @@ function reducer(state: ITodoState, action: ActionType) {
   let filterTodoItems = state.todoItems;
   switch (action.type) {
     case 'addNewTodo':
-      todoItems = [...state.todoItems, { id: window.crypto.randomUUID(), title: action.payload, completed: false } as ITodoItemProps]
+      todoItems = [...state.todoItems, { id: window.crypto.randomUUID(), title: action.payload, completed: false, writable: false } as ITodoItemProps]
       return { todoItems, filterTodoItems: todoItems };
     case 'toggleCompleted':
       todoItems = state.todoItems.map((item) => item.id === action.payload ? { ...item, completed: !item.completed } : item);
@@ -54,6 +56,12 @@ function reducer(state: ITodoState, action: ActionType) {
       return { todoItems, filterTodoItems: todoItems };
     case 'all':
       return { todoItems, filterTodoItems };
+    case 'changeWritable':
+      todoItems = state.todoItems.map((item) => item.id === action.payload ? { ...item, writable: !item.writable } : item);
+      return { todoItems, filterTodoItems: todoItems };
+    case 'updateTodoItem':
+      todoItems = state.todoItems.map((item) => item.id === action.payload.id ? { ...item, title: action.payload.title, writable: false } : item);
+      return { todoItems, filterTodoItems: todoItems };
     default:
       throw new Error();
   }
@@ -102,19 +110,33 @@ function App() {
     });
   }, []);
 
+  const updateTodoItem = React.useCallback((id: string, title: string) => {
+    return dispatch({
+      type: 'updateTodoItem',
+      payload: { id, title },
+    });
+  }, []);
+
+  const changeWritable = React.useCallback((id: string) => {
+    return dispatch({
+      type: 'changeWritable',
+      payload: id,
+    });
+  }, []);
+
   // console.log(state.todoItems);
   return (
     <>
       <section className="todoapp">
         <Header addNewTodo={addNewTodo}></Header>
 
-        <TodoList todoItems={state.filterTodoItems || []} toggleCompleted={toggleCompleted} deleteTodoItem={deleteTodoItem} toggleAll={toggleAll}></TodoList>
+        <TodoList changeWritable={changeWritable} updateTodoItem={updateTodoItem} todoItems={state.filterTodoItems || []} toggleCompleted={toggleCompleted} deleteTodoItem={deleteTodoItem} toggleAll={toggleAll}></TodoList>
 
         <Action count={state.filterTodoItems?.length || 0} filterTodoItems={filterTodoItems} clearCompleted={clearCompleted}></Action>
 
       </section>
       <footer className="info">
-        {/* <p>Double-click to edit a todo</p> */}
+        <p>Double-click to edit a todo</p>
 
         <p>
           Template by
