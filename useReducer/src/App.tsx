@@ -36,13 +36,13 @@ function reducer(state: ITodoState, action: ActionType) {
       return { todoItems, filterTodoItems: todoItems };
     case 'toggleCompleted':
       todoItems = state.todoItems.map((item) => item.id === action.payload ? { ...item, completed: !item.completed } : item);
-      return { todoItems: todoItems, filterTodoItems: todoItems };
+      return { todoItems, filterTodoItems: todoItems };
     case 'deleteTodoItem':
       todoItems = state.todoItems.filter(item => item.id !== action.payload)
       return { todoItems, filterTodoItems: todoItems };
     case 'toggleAll':
       todoItems = state.todoItems.map(item => ({ ...item, completed: !item.completed }));
-      return { todoItems: todoItems, filterTodoItems: todoItems };
+      return { todoItems, filterTodoItems: todoItems };
     case 'completed':
       filterTodoItems = state.todoItems.filter(item => item.completed);
       return { todoItems, filterTodoItems };
