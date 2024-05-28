@@ -3,12 +3,6 @@ import { IMainProps } from '../interfaces/IMainProps'
 
 function TodoList({ todoItems, toggleCompleted, deleteTodoItem, toggleAll, updateTodoItem, changeWritable }: IMainProps) {
 
-    const handleDoubleClick = (todoItem: any) => {
-        todoItem.writable = !todoItem.writable;
-        return todoItem;
-    };
-
-
     return (
         <section className="main">
             <input id="toggle-all" className="toggle-all" type="checkbox" onChange={toggleAll} />
