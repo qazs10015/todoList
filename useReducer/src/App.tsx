@@ -12,7 +12,7 @@ interface ITodoState {
 const initialState = { todoItems: [], filterTodoItems: [] } as ITodoState;
 
 /** 定義 各種動作與狀態
- * 動作：addNewTodo、toggleAll、toggleCompleted、deleteTodoItem、clearCompleted
+ * 動作：addNewTodo、toggleAll、toggleCompleted、deleteTodoItem、clearCompleted、updateTodoItem、changeWritable
  * 狀態：all、active、completed
  */
 type ActionType =
