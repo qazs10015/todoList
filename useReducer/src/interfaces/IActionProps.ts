@@ -1,5 +1,5 @@
 export interface IActionProps {
   count: number;
   clearCompleted: () => void;
-  filterTodoItems: (filter: 'all' | 'active' | 'completed') => void;
+  setFilter: React.Dispatch<React.SetStateAction<'All' | 'Active' | 'Completed'>>;
 }

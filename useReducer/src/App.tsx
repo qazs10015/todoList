@@ -6,62 +6,47 @@ import Action from './components/Action';
 
 interface ITodoState {
   todoItems: ITodoItemProps[];
-  filterTodoItems: ITodoItemProps[];
 }
 
-const initialState = { todoItems: [], filterTodoItems: [] } as ITodoState;
+const initialState = { todoItems: [], } as ITodoState;
 
-/** 定義 各種動作與狀態
+/** 定義 各種動作
  * 動作：addNewTodo、toggleAll、toggleCompleted、deleteTodoItem、clearCompleted、updateTodoItem、changeWritable
- * 狀態：all、active、completed
  */
 type ActionType =
   { type: 'addNewTodo', payload: string } |
   { type: 'toggleAll' } |
   { type: 'toggleCompleted'; payload: string } |
   { type: 'deleteTodoItem'; payload: string } |
-  { type: 'active' } |
-  { type: 'completed' } |
   { type: 'clearCompleted' } |
-  { type: 'all' } |
   { type: 'updateTodoItem'; payload: { id: string, title: string } } |
   { type: 'changeWritable'; payload: string }
 
 function reducer(state: ITodoState, action: ActionType) {
   // 用於操作新增、刪除
   let todoItems = state.todoItems;
-  // 顯示、過濾用
-  let filterTodoItems = state.todoItems;
   switch (action.type) {
     case 'addNewTodo':
       todoItems = [...state.todoItems, { id: window.crypto.randomUUID(), title: action.payload, completed: false, writable: false } as ITodoItemProps]
-      return { todoItems, filterTodoItems: todoItems };
+      return { todoItems, };
     case 'toggleCompleted':
       todoItems = state.todoItems.map((item) => item.id === action.payload ? { ...item, completed: !item.completed } : item);
-      return { todoItems, filterTodoItems: todoItems };
+      return { todoItems, };
     case 'deleteTodoItem':
       todoItems = state.todoItems.filter(item => item.id !== action.payload)
-      return { todoItems, filterTodoItems: todoItems };
+      return { todoItems, };
     case 'toggleAll':
       todoItems = state.todoItems.map(item => ({ ...item, completed: !item.completed }));
-      return { todoItems, filterTodoItems: todoItems };
-    case 'completed':
-      filterTodoItems = state.todoItems.filter(item => item.completed);
-      return { todoItems, filterTodoItems };
-    case 'active':
-      filterTodoItems = state.todoItems.filter(item => !item.completed);
-      return { todoItems, filterTodoItems };
+      return { todoItems, };
     case 'clearCompleted':
       todoItems = state.todoItems.filter(item => !item.completed);
-      return { todoItems, filterTodoItems: todoItems };
-    case 'all':
-      return { todoItems, filterTodoItems };
+      return { todoItems, };
     case 'changeWritable':
       todoItems = state.todoItems.map((item) => item.id === action.payload ? { ...item, writable: !item.writable } : item);
-      return { todoItems, filterTodoItems: todoItems };
+      return { todoItems, };
     case 'updateTodoItem':
       todoItems = state.todoItems.map((item) => item.id === action.payload.id ? { ...item, title: action.payload.title, writable: false } : item);
-      return { todoItems, filterTodoItems: todoItems };
+      return { todoItems, };
     default:
       throw new Error();
   }
@@ -69,6 +54,8 @@ function reducer(state: ITodoState, action: ActionType) {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  // 設定過濾器
+  const [filter, setFilter] = React.useState<'All' | 'Active' | 'Completed'>('All');
 
   const addNewTodo = React.useCallback((todo: string) => {
     return dispatch({
@@ -97,13 +84,6 @@ function App() {
     });
   }, []);
 
-  const filterTodoItems = React.useCallback((filter: 'all' | 'active' | 'completed') => {
-    return dispatch({
-      type: filter,
-      payload: filter,
-    });
-  }, []);
-
   const clearCompleted = React.useCallback(() => {
     return dispatch({
       type: 'clearCompleted',
@@ -124,19 +104,25 @@ function App() {
     });
   }, []);
 
+  const filteredTodos = state.todoItems.filter(todo => {
+    if (filter === 'Active') return !todo.completed;
+    if (filter === 'Completed') return todo.completed;
+    return true;
+  });
+
   const todoListProps = {
     changeWritable,
     updateTodoItem,
-    todoItems: state.filterTodoItems || [],
+    todoItems: filteredTodos || [],
     toggleCompleted,
     deleteTodoItem,
     toggleAll
   };
 
   const actionProps = {
-    count: state.filterTodoItems?.length || 0,
+    count: filteredTodos?.length || 0,
     clearCompleted,
-    filterTodoItems
+    setFilter
   };
 
   return (

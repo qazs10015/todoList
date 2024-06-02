@@ -1,7 +1,7 @@
 import React from 'react';
 import { IActionProps } from '../interfaces/IActionProps'
 
-function Action({ count, clearCompleted, filterTodoItems }: IActionProps) {
+function Action({ count, clearCompleted, setFilter }: IActionProps) {
     return (
         <footer className="footer">
 
@@ -13,13 +13,13 @@ function Action({ count, clearCompleted, filterTodoItems }: IActionProps) {
 
             <ul className="filters">
                 <li>
-                    <a className="selected" href="#/" onClick={() => filterTodoItems('all')}>All</a>
+                    <a className="selected" href="#/" onClick={() => setFilter('All')}>All</a>
                 </li>
                 <li>
-                    <a href="#/active" onClick={() => filterTodoItems('active')}>Active</a>
+                    <a href="#/active" onClick={() => setFilter('Active')}>Active</a>
                 </li>
                 <li>
-                    <a href="#/completed" onClick={() => filterTodoItems('completed')}>Completed</a>
+                    <a href="#/completed" onClick={() => setFilter('Completed')}>Completed</a>
                 </li>
             </ul>
 
