@@ -57,52 +57,52 @@ function App() {
   // 設定過濾器
   const [filter, setFilter] = React.useState<'All' | 'Active' | 'Completed'>('All');
 
-  const addNewTodo = React.useCallback((todo: string) => {
+  const addNewTodo = (todo: string) => {
     return dispatch({
       type: 'addNewTodo',
       payload: todo,
     });
-  }, []);
+  }
 
-  const toggleCompleted = React.useCallback((id: string) => {
+  const toggleCompleted = (id: string) => {
     return dispatch({
       type: 'toggleCompleted',
       payload: id,
     });
-  }, []);
+  }
 
-  const toggleAll = React.useCallback(() => {
+  const toggleAll = () => {
     return dispatch({
       type: 'toggleAll',
     });
-  }, []);
+  }
 
-  const deleteTodoItem = React.useCallback((id: string) => {
+  const deleteTodoItem = (id: string) => {
     return dispatch({
       type: 'deleteTodoItem',
       payload: id,
     });
-  }, []);
+  }
 
-  const clearCompleted = React.useCallback(() => {
+  const clearCompleted = () => {
     return dispatch({
       type: 'clearCompleted',
     });
-  }, []);
+  }
 
-  const updateTodoItem = React.useCallback((id: string, title: string) => {
+  const updateTodoItem = (id: string, title: string) => {
     return dispatch({
       type: 'updateTodoItem',
       payload: { id, title },
     });
-  }, []);
+  }
 
-  const changeWritable = React.useCallback((id: string) => {
+  const changeWritable = (id: string) => {
     return dispatch({
       type: 'changeWritable',
       payload: id,
     });
-  }, []);
+  }
 
   const filteredTodos = state.todoItems.filter(todo => {
     if (filter === 'Active') return !todo.completed;
