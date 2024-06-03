@@ -128,7 +128,7 @@ function App() {
   return (
     <>
       <section className="todoapp">
-        <Header addNewTodo={addNewTodo}></Header>
+        <Header addNewTodo={addNewTodo} toggleAll={toggleAll}></Header>
 
         <TodoList {...todoListProps}></TodoList>
 

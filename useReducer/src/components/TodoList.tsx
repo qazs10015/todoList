@@ -1,12 +1,10 @@
 import React from 'react';
 import { IMainProps } from '../interfaces/IMainProps'
 
-function TodoList({ todoItems, toggleCompleted, deleteTodoItem, toggleAll, updateTodoItem, changeWritable }: IMainProps) {
+function TodoList({ todoItems, toggleCompleted, deleteTodoItem, updateTodoItem, changeWritable }: IMainProps) {
 
     return (
         <section className="main">
-            <input id="toggle-all" className="toggle-all" type="checkbox" onChange={toggleAll} />
-            <label htmlFor="toggle-all">Mark all as complete</label>
             <ul className="todo-list">
                 {todoItems.map((todoItem) => {
                     return (

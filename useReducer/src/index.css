@@ -1,2 +1,21 @@
 @import url('../node_modules/todomvc-app-css/index.css');
 @import url('../node_modules/todomvc-common/base.css');
+.toggle-all + label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 65px;
+    font-size: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.new-todo {
+    margin-left: 60px;
+    padding: 16px 16px 16px 0px;
+    height: 65px;
+    border: none;
+    background: rgba(0, 0, 0, 0.003);
+    box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
+}
