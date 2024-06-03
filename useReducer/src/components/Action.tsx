@@ -8,7 +8,7 @@ function Action({ count, clearCompleted, setFilter }: IActionProps) {
             <span className="todo-count">
                 <strong>{count}</strong>
                 {' '}
-                item left
+                item(s)
             </span>
 
             <ul className="filters">
