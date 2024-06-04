@@ -1,3 +1,4 @@
+import Action from './components/Action';
 import Header from './components/Header';
 import TodoList from './components/TodoList';
 import { TodoAppContextProvider } from './context/todoContext';
@@ -5,10 +6,13 @@ import { TodoAppContextProvider } from './context/todoContext';
 
 function App() {
   return (
-    <TodoAppContextProvider>
-      <Header ></Header>
-      <TodoList></TodoList>
-    </TodoAppContextProvider>
+    <section className="todoapp">
+      <TodoAppContextProvider>
+        <Header ></Header>
+        <TodoList></TodoList>
+        <Action></Action>
+      </TodoAppContextProvider>
+    </section>
 
   )
 }

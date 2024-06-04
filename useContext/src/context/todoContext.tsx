@@ -11,13 +11,14 @@ interface ContextProviderProps {
   updateTodoItem: (id: string, title: string) => void;
   clearCompleted: () => void;
   setFilter: (filter: 'All' | 'Active' | 'Completed') => void;
+  filterState: 'All' | 'Active' | 'Completed';
 }
 
 export const TodoAppContext = createContext<ContextProviderProps | undefined>(undefined);
 
 export function TodoAppContextProvider(allProps: { children: ReactNode }) {
   const [todoItems, setTodoItems] = useState<ITodoItemProps[]>([]);
-  const [filter, setFilterState] = useState<'All' | 'Active' | 'Completed'>('All');
+  const [filterState, setFilterState] = useState<'All' | 'Active' | 'Completed'>('All');
 
   const addNewTodo = (newTodo: string) => {
     const newTodoItem: ITodoItemProps = { id: Date.now().toString(), title: newTodo, completed: false, writable: false };
@@ -38,11 +39,11 @@ export function TodoAppContextProvider(allProps: { children: ReactNode }) {
   };
 
   const changeWritable = (id: string) => {
-    // Implement the functionality if required
+    setTodoItems(todoItems.map((item) => (item.id === id ? { ...item, writable: true } : { ...item, writable: false })));
   };
 
   const updateTodoItem = (id: string, title: string) => {
-    setTodoItems(todoItems.map((item) => (item.id === id ? { ...item, title } : item)));
+    setTodoItems(todoItems.map((item) => (item.id === id ? { ...item, title, writable: false } : item)));
   };
 
   const clearCompleted = () => {
@@ -63,6 +64,7 @@ export function TodoAppContextProvider(allProps: { children: ReactNode }) {
     updateTodoItem,
     clearCompleted,
     setFilter,
+    filterState
   };
 
   return <TodoAppContext.Provider value={props}>{allProps.children}</TodoAppContext.Provider>;
