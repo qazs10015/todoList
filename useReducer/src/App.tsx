@@ -145,7 +145,7 @@ function App() {
 
         <p>
           Created by
-          <a href="http://todomvc.com">you</a>
+          <a href="https://github.com/qazs10015/todoList_React"> qazs10015</a>
         </p>
         <p>
           Part of
